@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "rk-recall: Recall-Compensation Theorem for Runge-Kutta Error Accumulation"
+type: software
+authors:
+  - name: "rk-recall Contributors"
+    email: "17319939601@163.com"
+repository-code: "https://github.com/selah-project/rk-recall"
+url: "https://github.com/selah-project/rk-recall"
+abstract: >-
+  A self-contained numerical-integration module that tames Runge-Kutta error
+  accumulation via a three-layer hybrid correction: (1) GamblePole discrete
+  pole jump for large errors, (2) LimitCycle Poincare-Bendixson projection
+  for medium errors, (3) Recall golden-ratio convex combination for small
+  errors. The algorithm is decoupled from any specific ODE via an oracle
+  interface (default DOP853 8th-order reference). Achieves engineering-zero
+  error (epsilon < 1e-10) on harmonic oscillator; verified on Lorenz
+  (chaotic, no analytical) and Van der Pol (nonlinear, no closed-form).
+keywords:
+  - numerical-integration
+  - runge-kutta
+  - error-compensation
+  - dynamical-systems
+  - bures-metric
+  - golden-ratio
+  - limit-cycle
+  - dop853
+  - oracle
+license: MIT
+version: "1.0.0"
+date-released: "2026-06-29"
+preferred-citation:
+  type: software
+  title: "rk-recall: Recall-Compensation Theorem for Runge-Kutta Error Accumulation"
+  authors:
+    - name: "rk-recall Contributors"
+  year: 2026
+  url: "https://github.com/17319939601/rk-recall"
+  version: "1.0.0"

@@ -1,0 +1,84 @@
+# GitHub Actions CI for rk_recall / rk_recall 持续集成
+# Tests on multiple Python versions to ensure portability.
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy matplotlib scipy pytest pytest-cov
+
+      - name: Install package
+        run: |
+          pip install -e . --no-deps
+
+      - name: Run tests
+        run: |
+          pytest tests/ -v --tb=short
+
+      - name: Run algorithm smoke test
+        run: |
+          python -c "
+import numpy as np
+from rk_recall import (
+    rk4_hybrid_correction, GamblePoleConfig, LimitCycleConfig,
+    make_dop853_oracle, harmonic_oscillator, lorenz, van_der_pol,
+)
+
+# Test 1: Harmonic oscillator (has analytical solution)
+y0 = np.array([1.0, 0.0])
+h = rk4_hybrid_correction(
+    harmonic_oscillator, y0, 0.0, 50.0, 0.1, recall_period=10,
+    gamble_config=GamblePoleConfig(error_threshold=1e-10),
+    limit_config=LimitCycleConfig(amplitude_bound=1e-11),
+    recall_sub_steps=20,
+)
+print(f'Harmonic hybrid error: {h.final_error:.2e}')
+assert h.final_error < 1e-9, f'Harmonic error too large: {h.final_error}'
+
+# Test 2: Lorenz (no analytical solution — real computation)
+y0 = np.array([1.0, 1.0, 1.0])
+h = rk4_hybrid_correction(
+    lorenz, y0, 0.0, 10.0, 0.01, recall_period=10,
+    gamble_config=GamblePoleConfig(error_threshold=1e-6),
+    limit_config=LimitCycleConfig(amplitude_bound=1e-4),
+    recall_sub_steps=5,
+)
+print(f'Lorenz hybrid error: {h.final_error:.2e}')
+assert np.all(np.isfinite(h.y_array)), 'Lorenz produced non-finite values'
+
+# Test 3: Van der Pol (no closed-form — real computation)
+y0 = np.array([2.0, 0.0])
+h = rk4_hybrid_correction(
+    van_der_pol, y0, 0.0, 30.0, 0.05, recall_period=10,
+    gamble_config=GamblePoleConfig(error_threshold=1e-8),
+    limit_config=LimitCycleConfig(amplitude_bound=1e-6),
+    recall_sub_steps=10,
+)
+print(f'Van der Pol hybrid error: {h.final_error:.2e}')
+assert h.final_error < 1e-5, f'Van der Pol error too large: {h.final_error}'
+
+print('All smoke tests passed!')
+"
