@@ -74,11 +74,11 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/17319939601/rk-recall"
-Repository = "https://github.com/17319939601/rk-recall"
-Documentation = "https://github.com/17319939601/rk-recall#readme"
-"Bug Tracker" = "https://github.com/17319939601/rk-recall/issues"
-Changelog = "https://github.com/17319939601/rk-recall/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/jinggu-glitch/rk-recall"
+Repository = "https://github.com/jinggu-glitch/rk-recall"
+Documentation = "https://github.com/jinggu-glitch/rk-recall#readme"
+"Bug Tracker" = "https://github.com/jinggu-glitch/rk-recall/issues"
+Changelog = "https://github.com/jinggu-glitch/rk-recall/blob/main/CHANGELOG.md"
 
 # ─── setuptools-specific discovery ───────────────────────────────────
 [tool.setuptools]

@@ -12,7 +12,7 @@ Thank you for your interest in contributing to **rk-recall**. This document desc
 ### Clone and install
 
 ```bash
-git clone https://github.com/17319939601/rk-recall.git
+git clone https://github.com/jinggu-glitch/rk-recall.git
 cd rk-recall
 python -m venv .venv
 # Windows
