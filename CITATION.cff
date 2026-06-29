@@ -1,39 +1,46 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-title: "rk-recall: Recall-Compensation Theorem for Runge-Kutta Error Accumulation"
+title: "rk-recall: Drift Convergence Theorem for Runge-Kutta via ω-Limit-Set Projection"
 type: software
 authors:
   - name: "rk-recall Contributors"
     email: "17319939601@163.com"
-repository-code: "https://github.com/selah-project/rk-recall"
-url: "https://github.com/selah-project/rk-recall"
+repository-code: "https://github.com/jinggu-glitch/rk-recall"
+url: "https://github.com/jinggu-glitch/rk-recall"
 abstract: >-
   A self-contained numerical-integration module that tames Runge-Kutta error
-  accumulation via a three-layer hybrid correction: (1) GamblePole discrete
-  pole jump for large errors, (2) LimitCycle Poincare-Bendixson projection
-  for medium errors, (3) Recall golden-ratio convex combination for small
-  errors. The algorithm is decoupled from any specific ODE via an oracle
-  interface (default DOP853 8th-order reference). Achieves engineering-zero
-  error (epsilon < 1e-10) on harmonic oscillator; verified on Lorenz
-  (chaotic, no analytical) and Van der Pol (nonlinear, no closed-form).
+  accumulation via ω-limit-set projection (§3.26.16 Drift Convergence
+  Theorem) and Pyragas→Γ phase locking (§3.26.17). The core theorem proves
+  drift ε_leaf(T_baseline) → 0 as T_baseline → ∞ (Birkhoff ergodic +
+  Poincaré recurrence), a property not possessed by Symplectic integrators,
+  Projected RK, or Pyragas DFC. The algorithm is fully decoupled from any
+  specific ODE and uses NO external oracle: the correction anchor (hope_p)
+  is located in closed form from the trajectory's own ω-limit set, in pure
+  numpy. Verified on harmonic oscillator (analytical available), Lorenz
+  (chaotic, no analytical), and Van der Pol (nonlinear, no closed-form).
+  Honest limitations: drift → 0 is asymptotic (not strict 0, bounded by
+  floating-point precision); phase → O(h²) (not strict 0, bounded by RK4
+  local error); requires bounded systems (ω-limit set must exist); not
+  suitable for stiff or high-dimensional (d > 3) systems.
 keywords:
   - numerical-integration
   - runge-kutta
-  - error-compensation
-  - dynamical-systems
-  - bures-metric
-  - golden-ratio
+  - drift-convergence
+  - ergodic-theorem
   - limit-cycle
-  - dop853
-  - oracle
+  - omega-limit-set
+  - pyragas-dfc
+  - phase-locking
+  - dynamical-systems
+  - no-oracle
 license: MIT
-version: "1.0.0"
+version: "2.0.0"
 date-released: "2026-06-29"
 preferred-citation:
   type: software
-  title: "rk-recall: Recall-Compensation Theorem for Runge-Kutta Error Accumulation"
+  title: "rk-recall: Drift Convergence Theorem for Runge-Kutta via ω-Limit-Set Projection"
   authors:
     - name: "rk-recall Contributors"
   year: 2026
   url: "https://github.com/jinggu-glitch/rk-recall"
-  version: "1.0.0"
+  version: "2.0.0"

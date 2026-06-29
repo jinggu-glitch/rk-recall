@@ -2,9 +2,11 @@ rk-recall
 =========
 
 A self-contained numerical-integration module that tames Runge-Kutta error
-accumulation via a three-layer hybrid correction.
+accumulation via ω-limit-set projection (§3.26.16 Drift Convergence Theorem)
+and Pyragas→Γ phase locking (§3.26.17).
 
-一个自包含的数值积分模块, 通过三层混合校正驯服 Runge-Kutta 误差累积.
+一个自包含的数值积分模块, 通过 ω-极限集投影 (§3.26.16 漂移收敛定理) 和
+Pyragas→Γ 相位锁定 (§3.26.17) 驯服 Runge-Kutta 误差累积.
 
 .. toctree::
    :maxdepth: 2

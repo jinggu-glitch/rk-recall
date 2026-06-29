@@ -65,10 +65,10 @@ All 25 tests should pass.
 
 **Example**:
 ```
-feat(oracle): add Radau implicit oracle option
+feat(§3.26.16): extend adaptive baseline to d>3 systems
 
-Adds `make_radau_oracle` as an alternative to DOP853 for stiff systems.
-Validates on Van der Pol with μ=1000 (stiff regime).
+Adds dimension-aware T_baseline extension for high-dimensional attractors.
+Validates on a 4D hyperchaotic system with Γ-distance drift metric.
 ```
 
 ### 3. Pre-commit hooks
@@ -179,7 +179,7 @@ def my_function(x: float) -> float:
 ### Optional dependencies
 
 - Hard dependency: `numpy` only
-- Optional: `scipy` (oracle), `matplotlib` (plot)
+- Optional: `scipy` (independent validation layer, test-only), `matplotlib` (plot)
 - Import optional deps lazily inside functions
 - Raise `MissingOptionalDependencyError` if missing
 

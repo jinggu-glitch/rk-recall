@@ -1,12 +1,13 @@
 # Runtime dependencies for rk_recall / rk_recall 运行时依赖
-# Only numpy is required at runtime. scipy and matplotlib are optional.
-# 运行时仅需 numpy. scipy 和 matplotlib 为可选依赖.
+# Only numpy is required at runtime. matplotlib is optional.
+# 运行时仅需 numpy. matplotlib 为可选依赖.
+# (scipy is no longer needed — closed-form P* location is pure numpy)
+# (scipy 不再需要 — 闭式 P* 定位纯 numpy 实现)
 #
 # Install with:
 #   pip install rk-recall              # minimal (numpy only)
-#   pip install rk-recall[oracle]      # + scipy (for default DOP853 oracle)
 #   pip install rk-recall[plot]        # + matplotlib (for plotting helpers)
-#   pip install rk-recall[all]         # + scipy + matplotlib
+#   pip install rk-recall[all]         # + matplotlib
 #   pip install rk-recall[dev]         # + dev tooling (pytest, mypy, ruff, ...)
 
 numpy>=1.23,<3.0

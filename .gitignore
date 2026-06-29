@@ -127,3 +127,6 @@ rk_recall_comparison.png
 rk_hybrid_comparison.png
 rk_recall_comparison.pdf
 rk_hybrid_comparison.pdf
+
+# Temporary experiment scripts (underscore-prefixed, not part of the module)
+_*.py

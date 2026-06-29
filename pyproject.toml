@@ -1,5 +1,5 @@
 # ─────────────────────────────────────────────────────────────────────
-# rk_recall — §3.25 Recall-Compensation Theorem for Runge-Kutta
+# rk_recall — §3.26.16 Drift Convergence Theorem for Runge-Kutta
 # PEP 517/518/621 compliant build specification.
 # ─────────────────────────────────────────────────────────────────────
 [build-system]
@@ -8,8 +8,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rk-recall"
-version = "1.0.0"
-description = "Recall-Compensation Theorem for Runge-Kutta error accumulation: a three-layer hybrid (GamblePole + LimitCycle + Recall) achieving engineering-zero error."
+version = "2.0.0"
+description = "Drift Convergence Theorem for Runge-Kutta: ω-limit-set projection (§3.26.16) + Pyragas→Γ phase locking (§3.26.17). Drift → 0 as T_baseline → ∞."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -20,14 +20,14 @@ requires-python = ">=3.9"
 keywords = [
     "numerical-integration",
     "runge-kutta",
-    "error-compensation",
-    "dynamical-systems",
-    "bures-metric",
-    "golden-ratio",
+    "drift-convergence",
+    "ergodic-theorem",
+    "omega-limit-set",
     "limit-cycle",
-    "predictive-coding",
-    "dop853",
-    "oracle",
+    "pyragas-dfc",
+    "phase-locking",
+    "dynamical-systems",
+    "no-oracle",
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -49,11 +49,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# §默认 oracle 依赖 scipy / Default oracle depends on scipy
-oracle = [
-    "scipy>=1.9,<2.0",
-]
 # §绘图功能依赖 matplotlib / Plotting depends on matplotlib
+# §注: scipy 不再是依赖 (闭式 P* 定位纯 numpy 实现) / Note: scipy is no longer a dependency (closed-form P* is pure numpy)
 plot = [
     "matplotlib>=3.6,<4.0",
 ]
@@ -69,7 +66,6 @@ dev = [
 ]
 # §完整安装 (含所有可选依赖) / Full install (all optional deps)
 all = [
-    "scipy>=1.9,<2.0",
     "matplotlib>=3.6,<4.0",
 ]
 
@@ -124,7 +120,7 @@ show_column_numbers = true
 pretty = true
 
 [[tool.mypy.overrides]]
-module = ["scipy.*", "matplotlib.*"]
+module = ["matplotlib.*"]
 ignore_missing_imports = true
 
 # ─── ruff linter (replaces flake8/pylint) ────────────────────────────
@@ -179,7 +175,7 @@ extend-exclude = '''
 profile = "black"
 line_length = 100
 known_first_party = ["rk_recall"]
-known_third_party = ["numpy", "scipy", "matplotlib", "pytest"]
+known_third_party = ["numpy", "matplotlib", "pytest"]
 multi_line_output = 3
 include_trailing_comma = true
 force_grid_wrap = 0

@@ -15,8 +15,8 @@ sys.path.insert(0, os.path.abspath(".."))
 project = "rk-recall"
 copyright = "2026, rk-recall Contributors <17319939601@163.com>"
 author = "rk-recall Contributors"
-release = "1.0.0"
-version = "1.0.0"
+release = "2.0.0"
+version = "2.0.0"
 
 # -- General configuration ---------------------------------------------------
 extensions = [

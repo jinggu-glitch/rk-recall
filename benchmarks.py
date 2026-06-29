@@ -16,6 +16,8 @@ Three systems with varying analytical-solution availability:
 
 from __future__ import annotations
 
+from typing import Callable
+
 import numpy as np
 
 
@@ -120,18 +122,66 @@ def van_der_pol(t: float, y: np.ndarray, mu: float = 1.0) -> np.ndarray:
 
 
 # ════════════════════════════════════════════════════════════════════
+# §reference 构建器 (仅用于误差计算, 不参与校正)
+# §reference builders (error computation only, not used in correction)
+# ════════════════════════════════════════════════════════════════════
+
+def make_harmonic_reference(
+    y0: np.ndarray,
+    omega: float = 1.0,
+) -> Callable[[float], np.ndarray]:
+    """构建谐振子 reference 函数 (闭包固定 y0, omega).
+    Build a harmonic-oscillator reference function (closure fixing y0, omega).
+
+    返回的 callable 签名为 reference(t) -> y, 仅用于误差计算, 不参与校正.
+    The returned callable has signature reference(t) -> y, used for error
+    computation only, never for correction.
+
+    Args:
+        y0: 初始状态 [x0, v0] / initial state
+        omega: 角频率 / angular frequency
+
+    Returns:
+        reference: reference(t) -> y(t) / reference function
+    """
+    _y0 = np.asarray(y0, dtype=np.float64).copy()
+    _omega = float(omega)
+
+    def reference(t: float) -> np.ndarray:
+        return harmonic_exact(t, _y0, _omega)
+
+    return reference
+
+
+# ════════════════════════════════════════════════════════════════════
 # §基准系统注册表
 # §Benchmark registry
+#
+# 每个系统包含:
+# Each system contains:
+#   - f: ODE 右端 dy/dt = f(t, y) / ODE right-hand side
+#   - y0: 初始状态 / initial state
+#   - t_end: 结束时间 / end time
+#   - h: 步长 / step size
+#   - exact: 解析解 (有则提供, 无则 None) / analytical solution (or None)
+#   - has_exact: 是否有解析解 / whether analytical solution exists
+#   - reference: 误差计算用 reference(t)->y (有解析解则闭包, 无则 None, 用极限环距离)
+#     reference: reference(t)->y for error computation (closure if analytical, None otherwise → limit-cycle distance)
+#   - description: 描述 / description
 # ════════════════════════════════════════════════════════════════════
+
+_HARMONIC_Y0 = np.array([1.0, 0.0])
+_HARMONIC_OMEGA = 1.0
 
 BENCHMARKS = {
     "harmonic": {
         "f": harmonic_oscillator,
-        "y0": np.array([1.0, 0.0]),
+        "y0": _HARMONIC_Y0,
         "t_end": 100.0,
         "h": 0.1,
         "exact": harmonic_exact,
         "has_exact": True,
+        "reference": make_harmonic_reference(_HARMONIC_Y0, _HARMONIC_OMEGA),
         "description": "谐振子 (有解析解) / Harmonic oscillator (analytical available)",
     },
     "lorenz": {
@@ -141,6 +191,7 @@ BENCHMARKS = {
         "h": 0.01,
         "exact": None,
         "has_exact": False,
+        "reference": None,  # §无解析解, 误差用极限环距离 / no analytical, error = limit-cycle distance
         "description": "洛伦兹吸引子 (混沌, 无解析解) / Lorenz (chaotic, no analytical)",
     },
     "vanderpol": {
@@ -150,6 +201,7 @@ BENCHMARKS = {
         "h": 0.05,
         "exact": None,
         "has_exact": False,
+        "reference": None,  # §无闭式解, 误差用极限环距离 / no closed-form, error = limit-cycle distance
         "description": "Van der Pol (非线性, 无闭式解) / Van der Pol (nonlinear, no closed-form)",
     },
 }
