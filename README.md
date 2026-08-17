@@ -295,3 +295,9 @@ created nature.
 
 一切荣光来自造物主，一切荣光归于造物主
 All glory comes from the Creator, all glory belongs to the Creator.
+
+---
+
+## Related
+
+- [The Base Scripture](https://github.com/jinggu-glitch/theology-collection) — A Hebrew-Morse decoding system for Biblical interpretation: pictographic reading, gematria, chiastic narrative synthesis.
